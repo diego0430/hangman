@@ -6,7 +6,7 @@ m = int(lnm[2])
 
 lines=[]
 
-"横ラインを[-1,-1,2,5,-1,-1,-1]形式でlinesに追加していく"
+"横ラインを[-1,-1,x,y,-1,-1,-1]形式でlinesに追加していく"
 for ind in range(1,m+1):
     input_line_ind = input()
     abc=input_line_ind.split(" ")
@@ -24,30 +24,36 @@ for ind in range(1,m+1):
     line.append(-1)
     lines.append(line)
 
-state0 = {"vart":1,"depth":l}
-def clime(state):
+
+"最初の状態（１番目の一番下）を記録"
+state0 = {"vert":1,"depth":l}
+
+
+"今の状態stateから一つ上に行き、横棒を伝って移動した後の状態をstate0に返す"
+def climb(state):
     global state0
     dlist=[]
     for line in lines:
-        d=line[state["vart"]]
+        d=line[state["vert"]]
         if 0 < d and d < state["depth"]:
             dlist.append(d)
     if dlist==[]:
         newdepth = 0
-        newvart = state["vart"]
+        newvert = state["vert"]
     else:
         for line in lines:
-            if line[state["vart"]] == max(dlist):
-                if line[state["vart"]-1]>0:
-                    newvart=state["vart"]-1
+            if line[state["vert"]] == max(dlist):
+                if line[state["vert"]-1]>0:
+                    newvert=state["vert"]-1
                 else:
-                    newvart=state["vart"]+1
-                newdepth=line[newvart]
-    state0 = {"vart":newvart,"depth":newdepth}
+                    newvert=state["vert"]+1
+                newdepth=line[newvert]
+    state0 = {"vert":newvert,"depth":newdepth}
 
 
 
+"深さが0になるまで登る"
 while state0["depth"]>0:
-    clime(state0)
+    climb(state0)
 
-print(state0["vart"])
+print(state0["vert"])
